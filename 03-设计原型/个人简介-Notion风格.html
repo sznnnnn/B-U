@@ -835,6 +835,39 @@
 
         // 页面加载时自动加载保存的数据
         document.addEventListener('DOMContentLoaded', function() {
+            // 检查是否是首次访问
+            const userProfile = localStorage.getItem('userProfile');
+            const personalProfile = localStorage.getItem('personalProfile');
+            
+            // 如果没有任何数据，跳转到首次创建引导页面
+            if (!userProfile && !personalProfile) {
+                const shouldRedirect = confirm('检测到这是首次访问，是否前往创建个人档案？');
+                if (shouldRedirect) {
+                    window.location.href = '首次创建引导-Notion风格.html';
+                    return;
+                }
+            }
+            
+            // 如果有用户基本信息，填充到页面
+            if (userProfile) {
+                try {
+                    const data = JSON.parse(userProfile);
+                    // 填充基本信息到页面
+                    const nameElements = document.querySelectorAll('[contenteditable="true"]');
+                    if (nameElements.length > 0 && data.name) {
+                        // 找到姓名输入框并填充
+                        const nameInput = Array.from(nameElements).find(el => 
+                            el.textContent.includes('XX') || el.getAttribute('data-placeholder')?.includes('XX')
+                        );
+                        if (nameInput) {
+                            nameInput.textContent = data.name;
+                        }
+                    }
+                } catch (error) {
+                    console.error('加载用户信息失败:', error);
+                }
+            }
+            
             loadSavedData();
         });
 
