@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人简介 - Notion 风格</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'notion-bg': '#ffffff',
+                        'notion-text': '#37352f',
+                        'notion-text-secondary': '#787774',
+                        'notion-border': '#e9e9e7',
+                        'notion-border-hover': '#d4d4d1',
+                        'notion-bg-light': '#f7f6f3',
+                    },
+                    fontFamily: {
+                        'notion': ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', '"Noto Sans SC"', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+        [contenteditable="true"] {
+            outline: none;
+            border-bottom: 1px dashed #e9e9e7;
+            min-height: 1.5em;
+        }
+        [contenteditable="true"]:focus {
+            border-bottom-color: #d4d4d1;
+            background-color: #fafafa;
+        }
+        [contenteditable="true"]:empty:before {
+            content: attr(data-placeholder);
+            color: #9b9a97;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-button {
+            transition: all 0.2s ease;
+        }
+        .tab-button.active {
+            color: #37352f;
+            border-bottom: 2px solid #37352f;
+        }
+    </style>
+</head>
+<body class="font-notion bg-notion-bg text-notion-text">
+    <div class="min-h-screen py-10 px-5 md:px-10">
+        <div class="max-w-7xl mx-auto">
+            <!-- 页面标题 -->
+            <div class="mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold text-notion-text mb-2 leading-tight">个人档案</h1>
+                <p class="text-base text-notion-text-secondary font-normal">你的申请信息与进度概览</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- 左侧列：个人信息和我的联系方式 -->
+                <div class="lg:col-span-1 space-y-6 animate-fade-in">
+                    <!-- 个人信息卡片 -->
+                    <div class="bg-white border border-notion-border rounded-md p-6 hover:shadow-sm hover:border-notion-border-hover transition-all duration-200">
+                        <div class="flex flex-col items-center text-center mb-4">
+                            <div class="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-yellow-400 flex items-center justify-center text-white text-3xl font-semibold mb-4 cursor-pointer hover:opacity-90 transition-opacity" onclick="this.contentEditable='true'; this.focus();" contenteditable="true" data-placeholder="X">X</div>
+                            <h2 class="text-2xl font-bold text-notion-text mb-1 cursor-pointer hover:bg-notion-bg-light rounded px-2 py-1 transition-colors" contenteditable="true" data-placeholder="XX">XX</h2>
+                            <p class="text-base text-notion-text-secondary mb-2 cursor-pointer hover:bg-notion-bg-light rounded px-2 py-1 transition-colors" contenteditable="true" data-placeholder="产品设计师">产品设计师</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between py-2 border-b border-notion-bg-light">
+                                <span class="text-sm text-notion-text-secondary">性别</span>
+                                <div class="flex items-center gap-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" onclick="toggleGender(this)">
+                                    <svg class="w-4 h-4 text-notion-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="gender-icon">
+                                        <!-- 女性符号：圆圈 + 十字 -->
+                                        <circle cx="12" cy="9" r="4.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M12 13.5v4.5M9.75 16.5h4.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between py-2 border-b border-notion-bg-light">
+                                <span class="text-sm text-notion-text-secondary">所在城市</span>
+                                <span class="text-sm text-notion-text font-medium cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="未提供">未提供</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 我的联系方式 -->
+                    <div class="bg-white border border-notion-border rounded-md p-6 hover:shadow-sm hover:border-notion-border-hover transition-all duration-200">
+                        <h2 class="text-sm font-semibold text-notion-text-secondary uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            我的联系方式
+                        </h2>
+                        <div class="space-y-3" id="contact-list">
+                            <div class="flex items-center gap-3 group relative">
+                                <span class="text-sm text-notion-text flex-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="+86 xxxxxxxxxxx">+86 xxxxxxxxxxx</span>
+                                <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-3 group relative">
+                                <span class="text-sm text-notion-text flex-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="xx@xx.com">xx@xx.com</span>
+                                <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <button onclick="addContactItem(this)" class="mt-4 text-notion-text-secondary hover:text-notion-text transition-colors text-sm">
+                            添加我的联系方式
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 右侧主内容区：Tab 切换 -->
+                <div class="lg:col-span-3 space-y-6 animate-fade-in">
+                    <!-- Tab 导航 -->
+                    <div class="bg-white border border-notion-border rounded-md p-2">
+                        <div class="flex items-center gap-1 overflow-x-auto scrollbar-hide">
+                            <button onclick="switchTab('personal')" class="tab-button active px-4 py-2 text-sm font-medium text-notion-text-secondary hover:text-notion-text transition-colors whitespace-nowrap border-b-2 border-transparent">
+                                个人特质
+                            </button>
+                            <button onclick="switchTab('background')" class="tab-button px-4 py-2 text-sm font-medium text-notion-text-secondary hover:text-notion-text transition-colors whitespace-nowrap border-b-2 border-transparent">
+                                背景经历
+                            </button>
+                            <button onclick="switchTab('documents')" class="tab-button px-4 py-2 text-sm font-medium text-notion-text-secondary hover:text-notion-text transition-colors whitespace-nowrap border-b-2 border-transparent">
+                                身份证件
+                            </button>
+                            <button onclick="switchTab('essays')" class="tab-button px-4 py-2 text-sm font-medium text-notion-text-secondary hover:text-notion-text transition-colors whitespace-nowrap border-b-2 border-transparent">
+                                客户文书
+                            </button>
+                            <button onclick="switchTab('schools')" class="tab-button px-4 py-2 text-sm font-medium text-notion-text-secondary hover:text-notion-text transition-colors whitespace-nowrap border-b-2 border-transparent">
+                                匹配选校
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tab 内容：个人特质 -->
+                    <div id="tab-personal" class="tab-content active">
+                        <div class="space-y-6">
+                            <!-- 个人简介 -->
+                            <div class="bg-white border border-notion-border rounded-md p-6 hover:shadow-sm hover:border-notion-border-hover transition-all duration-200 group relative">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h2 class="text-sm font-semibold text-notion-text-secondary uppercase tracking-wider flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                        个人简介
+                                    </h2>
+                                    <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="text-base text-notion-text leading-relaxed space-y-4" contenteditable="true" data-placeholder="点击这里开始编辑个人简介...">
+                                    <p>
+                                        我是一名专注于产品设计的学生，目前就读于华中科技大学产品设计专业。我相信好的设计应该以用户为中心，通过深入理解用户需求，创造出既美观又实用的产品。
+                                    </p>
+                                    <p>
+                                        在学习和实践中，我不断探索用户体验设计的边界，致力于将设计思维与技术创新相结合。我热衷于参与各类设计竞赛，通过比赛锻炼自己的设计能力，并获得了多项国家级和国际级奖项。
+                                    </p>
+                                    <p>
+                                        未来，我希望能够成为一名优秀的产品设计师，用设计的力量解决实际问题，为用户创造更好的体验。
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- 学术成就 -->
+                            <div class="bg-white border border-notion-border rounded-md p-6 hover:shadow-sm hover:border-notion-border-hover transition-all duration-200 group relative">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h2 class="text-sm font-semibold text-notion-text-secondary uppercase tracking-wider flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                                        </svg>
+                                        学术成就
+                                    </h2>
+                                    <div class="flex items-center gap-2">
+                                        <button class="text-notion-text-secondary hover:text-notion-text transition-colors" onclick="addAchievementItem(this)">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                        </button>
+                                        <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="space-y-4" id="achievement-list">
+                                    <div class="group relative">
+                                        <div class="flex items-start gap-2">
+                                            <div class="flex-1">
+                                                <div class="text-base font-semibold text-notion-text mb-2 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="第17届UXPA区域竞赛（华中赛区）金奖">第17届UXPA区域竞赛（华中赛区）金奖</div>
+                                                <div class="text-sm text-notion-text-secondary mb-2 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="2025-10 · 用户体验专业协会（UXPA）">2025-10 · 用户体验专业协会（UXPA）</div>
+                                                <div class="text-sm text-notion-text leading-relaxed cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="晋级全国总决赛">晋级全国总决赛</div>
+                                            </div>
+                                            <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all mt-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="group relative">
+                                        <div class="flex items-start gap-2">
+                                            <div class="flex-1">
+                                                <div class="text-base font-semibold text-notion-text mb-2 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="第13届NCDA未来设计师竞赛全国三等奖">第13届NCDA未来设计师竞赛全国三等奖</div>
+                                                <div class="text-sm text-notion-text-secondary cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="2025-08 · NCDA组委会">2025-08 · NCDA组委会</div>
+                                            </div>
+                                            <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all mt-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 优势标签 -->
+                            <div class="bg-white border border-notion-border rounded-md p-6 hover:shadow-sm hover:border-notion-border-hover transition-all duration-200 group relative">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h2 class="text-sm font-semibold text-notion-text-secondary uppercase tracking-wider flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                        优势
+                                    </h2>
+                                    <div class="flex items-center gap-2">
+                                        <button class="text-notion-text-secondary hover:text-notion-text transition-colors" onclick="addTag(this, 'advantage')">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                        </button>
+                                        <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap gap-2" id="advantage-list">
+                                    <span class="group relative inline-flex items-center gap-1 px-3 py-1 bg-notion-bg-light rounded text-xs text-notion-text font-medium cursor-pointer hover:bg-notion-border transition-colors">
+                                        <span contenteditable="true" data-placeholder="灵活">灵活</span>
+                                        <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                    <span class="group relative inline-flex items-center gap-1 px-3 py-1 bg-notion-bg-light rounded text-xs text-notion-text font-medium cursor-pointer hover:bg-notion-border transition-colors">
+                                        <span contenteditable="true" data-placeholder="挑战性">挑战性</span>
+                                        <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                    <span class="group relative inline-flex items-center gap-1 px-3 py-1 bg-notion-bg-light rounded text-xs text-notion-text font-medium cursor-pointer hover:bg-notion-border transition-colors">
+                                        <span contenteditable="true" data-placeholder="坚持">坚持</span>
+                                        <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                    <span class="group relative inline-flex items-center gap-1 px-3 py-1 bg-notion-bg-light rounded text-xs text-notion-text font-medium cursor-pointer hover:bg-notion-border transition-colors">
+                                        <span contenteditable="true" data-placeholder="细致">细致</span>
+                                        <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 内容：背景经历 -->
+                    <div id="tab-background" class="tab-content">
+                        <div class="space-y-6">
+                            <!-- 教育背景 -->
+                            <div class="bg-white border border-notion-border rounded-md p-6 hover:shadow-sm hover:border-notion-border-hover transition-all duration-200">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h2 class="text-sm font-semibold text-notion-text-secondary uppercase tracking-wider flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        </svg>
+                                        教育背景
+                                    </h2>
+                                    <button class="text-notion-text-secondary hover:text-notion-text transition-colors" onclick="addEducationItem(this)">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="space-y-3" id="education-list">
+                                    <div class="group relative">
+                                        <div class="flex items-start gap-2">
+                                            <div class="flex-1">
+                                                <div class="text-base font-semibold text-notion-text mb-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="华中科技大学（HUST）">华中科技大学（HUST）</div>
+                                                <div class="text-sm text-notion-text-secondary mb-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="产品设计（Bachelor of Arts in Product Design）">产品设计（Bachelor of Arts in Product Design）</div>
+                                                <div class="text-sm text-notion-text-secondary cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="2022-09-01 至 2026-06-30 · GPA: 90.10/100">2022-09-01 至 2026-06-30 · GPA: 90.10/100</div>
+                                            </div>
+                                            <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all mt-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 职业经历 -->
+                            <div class="bg-white border border-notion-border rounded-md p-6 hover:shadow-sm hover:border-notion-border-hover transition-all duration-200">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h2 class="text-sm font-semibold text-notion-text-secondary uppercase tracking-wider flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        </svg>
+                                        职业经历
+                                    </h2>
+                                    <button class="text-notion-text-secondary hover:text-notion-text transition-colors" onclick="addCareerItem(this)">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="space-y-4" id="career-list">
+                                    <div class="group relative">
+                                        <div class="flex items-start gap-2">
+                                            <div class="flex-1">
+                                                <div class="text-base font-semibold text-notion-text mb-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="Product Manager Intern, Project 42">Product Manager Intern, Project 42</div>
+                                                <div class="text-sm text-notion-text-secondary mb-2 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="Wuhan Weipai Network Technology Co., Ltd. · Since 2025-07">Wuhan Weipai Network Technology Co., Ltd. · Since 2025-07</div>
+                                                <div class="text-sm text-notion-text leading-relaxed cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="Developed a data-driven analytics framework using funnel models to diagnose user churn, identify key pain points, and implement optimization strategies that boosted early-stage retention.">Developed a data-driven analytics framework using funnel models to diagnose user churn, identify key pain points, and implement optimization strategies that boosted early-stage retention.</div>
+                                            </div>
+                                            <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all mt-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 获奖经历 -->
+                            <div class="bg-white border border-notion-border rounded-md p-6 hover:shadow-sm hover:border-notion-border-hover transition-all duration-200">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h2 class="text-sm font-semibold text-notion-text-secondary uppercase tracking-wider flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                                        </svg>
+                                        获奖经历
+                                    </h2>
+                                    <button class="text-notion-text-secondary hover:text-notion-text transition-colors" onclick="addAwardItem(this)">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="space-y-4" id="award-list">
+                                    <div class="group relative">
+                                        <div class="flex items-start gap-2">
+                                            <div class="flex-1">
+                                                <div class="text-base font-semibold text-notion-text mb-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="第7届中国大学生智能机器人创意竞赛全国一等奖">第7届中国大学生智能机器人创意竞赛全国一等奖</div>
+                                                <div class="text-sm text-notion-text-secondary cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="2024-08 · CUIRCC组委会">2024-08 · CUIRCC组委会</div>
+                                            </div>
+                                            <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all mt-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="group relative">
+                                        <div class="flex items-start gap-2">
+                                            <div class="flex-1">
+                                                <div class="text-base font-semibold text-notion-text mb-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="第17届中国大学生计算机设计大赛全国三等奖">第17届中国大学生计算机设计大赛全国三等奖</div>
+                                                <div class="text-sm text-notion-text-secondary cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="2024-08 · CCSCDC组委会">2024-08 · CCSCDC组委会</div>
+                                            </div>
+                                            <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all mt-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="group relative">
+                                        <div class="flex items-start gap-2">
+                                            <div class="flex-1">
+                                                <div class="text-base font-semibold text-notion-text mb-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="UX设计奖2024国际提名">UX设计奖2024国际提名</div>
+                                                <div class="text-sm text-notion-text-secondary mb-2 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="2024-07">2024-07</div>
+                                                <div class="text-sm text-notion-text leading-relaxed cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="项目名称：\"Echoes of Nuo: A Cultural Heritage Project\"">项目名称："Echoes of Nuo: A Cultural Heritage Project"</div>
+                                            </div>
+                                            <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all mt-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 技能 -->
+                            <div class="bg-white border border-notion-border rounded-md p-6 hover:shadow-sm hover:border-notion-border-hover transition-all duration-200">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h2 class="text-sm font-semibold text-notion-text-secondary uppercase tracking-wider flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                        </svg>
+                                        技能
+                                    </h2>
+                                    <button class="text-notion-text-secondary hover:text-notion-text transition-colors" onclick="addSkillItem(this)">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="space-y-2" id="skill-list">
+                                    <div class="group relative flex items-center gap-2">
+                                        <div class="text-sm text-notion-text flex-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="Figma">Figma</div>
+                                        <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="group relative flex items-center gap-2">
+                                        <div class="text-sm text-notion-text flex-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="Adobe Photoshop">Adobe Photoshop</div>
+                                        <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="group relative flex items-center gap-2">
+                                        <div class="text-sm text-notion-text flex-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="Adobe Illustrator">Adobe Illustrator</div>
+                                        <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="group relative flex items-center gap-2">
+                                        <div class="text-sm text-notion-text flex-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="Adobe XD">Adobe XD</div>
+                                        <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="group relative flex items-center gap-2">
+                                        <div class="text-sm text-notion-text flex-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="After Effects">After Effects</div>
+                                        <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 内容：身份证件 -->
+                    <div id="tab-documents" class="tab-content">
+                        <div class="bg-white border border-notion-border rounded-md p-6 hover:shadow-sm hover:border-notion-border-hover transition-all duration-200">
+                            <h2 class="text-sm font-semibold text-notion-text-secondary uppercase tracking-wider mb-4 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                身份证件
+                            </h2>
+                            <div class="text-center py-12 text-notion-text-secondary text-sm">
+                                暂无身份证件信息
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 内容：客户文书 -->
+                    <div id="tab-essays" class="tab-content">
+                        <div class="bg-white border border-notion-border rounded-md p-6 hover:shadow-sm hover:border-notion-border-hover transition-all duration-200">
+                            <h2 class="text-sm font-semibold text-notion-text-secondary uppercase tracking-wider mb-4 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                客户文书
+                            </h2>
+                            <div class="text-center py-12 text-notion-text-secondary text-sm">
+                                暂无文书信息
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 内容：匹配选校 -->
+                    <div id="tab-schools" class="tab-content">
+                        <div class="bg-white border border-notion-border rounded-md p-6 hover:shadow-sm hover:border-notion-border-hover transition-all duration-200">
+                            <h2 class="text-sm font-semibold text-notion-text-secondary uppercase tracking-wider mb-4 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                                匹配选校
+                            </h2>
+                            <div class="text-center py-12 text-notion-text-secondary text-sm">
+                                暂无选校信息
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab 切换功能
+        function switchTab(tabName) {
+            // 隐藏所有 tab 内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 移除所有 tab 按钮的 active 状态
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 显示选中的 tab 内容
+            const targetTab = document.getElementById(`tab-${tabName}`);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+            
+            // 激活选中的 tab 按钮
+            event.target.classList.add('active');
+        }
+
+        // 切换性别图标
+        function toggleGender(element) {
+            const icon = element.querySelector('#gender-icon');
+            if (!icon) return;
+            
+            // 获取当前图标路径
+            const currentPath = icon.querySelector('path').getAttribute('d');
+            
+            // 定义不同的性别图标路径
+            const genderIcons = {
+                // 通用用户图标
+                user: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
+                // 男性图标（带圆形）
+                male: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
+                // 女性图标（带圆形）
+                female: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            };
+            
+            // 切换图标（简单循环）
+            // 这里可以扩展为更复杂的性别选择逻辑
+            // 目前保持为通用用户图标
+        }
+
+        // 删除项
+        function deleteItem(btn) {
+            // 二次确认
+            if (!confirm('确定要删除此项吗？')) {
+                return;
+            }
+            
+            // 优先查找最近的 .group 元素
+            let item = btn.closest('.group');
+            
+            // 如果没有找到 .group，则查找父元素（用于我的联系方式、优势标签等）
+            if (!item) {
+                item = btn.parentElement;
+            }
+            
+            if (item) {
+                // 添加删除动画
+                item.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-10px)';
+                
+                // 延迟删除，让动画完成
+                setTimeout(() => {
+                    item.remove();
+                }, 200);
+            }
+        }
+
+        // 添加我的联系方式项
+        function addContactItem(btn) {
+            const list = document.getElementById('contact-list');
+            const newItem = document.createElement('div');
+            newItem.className = 'flex items-center gap-3 group relative';
+            newItem.innerHTML = `
+                <span class="text-sm text-notion-text flex-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="新联系方式">新联系方式</span>
+                <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </button>
+            `;
+            list.appendChild(newItem);
+            newItem.querySelector('[contenteditable="true"]').focus();
+        }
+
+        // 添加学术成就项
+        function addAchievementItem(btn) {
+            const list = document.getElementById('achievement-list');
+            const newItem = document.createElement('div');
+            newItem.className = 'group relative';
+            newItem.innerHTML = `
+                <div class="flex items-start gap-2">
+                    <div class="flex-1">
+                        <div class="text-base font-semibold text-notion-text mb-2 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="成就名称">成就名称</div>
+                        <div class="text-sm text-notion-text-secondary mb-2 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="时间 · 颁发机构">时间 · 颁发机构</div>
+                        <div class="text-sm text-notion-text leading-relaxed cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="详细描述（可选）">详细描述（可选）</div>
+                    </div>
+                    <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all mt-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            `;
+            list.appendChild(newItem);
+            newItem.querySelector('[contenteditable="true"]').focus();
+        }
+
+        // 添加教育背景项
+        function addEducationItem(btn) {
+            const list = document.getElementById('education-list');
+            const newItem = document.createElement('div');
+            newItem.className = 'group relative';
+            newItem.innerHTML = `
+                <div class="flex items-start gap-2">
+                    <div class="flex-1">
+                        <div class="text-base font-semibold text-notion-text mb-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="学校名称">学校名称</div>
+                        <div class="text-sm text-notion-text-secondary mb-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="专业名称">专业名称</div>
+                        <div class="text-sm text-notion-text-secondary cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="时间 · GPA">时间 · GPA</div>
+                    </div>
+                    <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all mt-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            `;
+            list.appendChild(newItem);
+            newItem.querySelector('[contenteditable="true"]').focus();
+        }
+
+        // 添加职业经历项
+        function addCareerItem(btn) {
+            const list = document.getElementById('career-list');
+            const newItem = document.createElement('div');
+            newItem.className = 'group relative';
+            newItem.innerHTML = `
+                <div class="flex items-start gap-2">
+                    <div class="flex-1">
+                        <div class="text-base font-semibold text-notion-text mb-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="职位名称">职位名称</div>
+                        <div class="text-sm text-notion-text-secondary mb-2 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="公司名称 · 时间">公司名称 · 时间</div>
+                        <div class="text-sm text-notion-text leading-relaxed cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="工作描述">工作描述</div>
+                    </div>
+                    <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all mt-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            `;
+            list.appendChild(newItem);
+            newItem.querySelector('[contenteditable="true"]').focus();
+        }
+
+        // 添加获奖经历项
+        function addAwardItem(btn) {
+            const list = document.getElementById('award-list');
+            const newItem = document.createElement('div');
+            newItem.className = 'group relative';
+            newItem.innerHTML = `
+                <div class="flex items-start gap-2">
+                    <div class="flex-1">
+                        <div class="text-base font-semibold text-notion-text mb-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="奖项名称">奖项名称</div>
+                        <div class="text-sm text-notion-text-secondary cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="时间 · 颁发机构">时间 · 颁发机构</div>
+                    </div>
+                    <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all mt-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            `;
+            list.appendChild(newItem);
+            newItem.querySelector('[contenteditable="true"]').focus();
+        }
+
+        // 添加标签（优势）
+        function addTag(btn, type) {
+            const list = document.getElementById('advantage-list');
+            const newTag = document.createElement('span');
+            newTag.className = 'group relative inline-flex items-center gap-1 px-3 py-1 bg-notion-bg-light rounded text-xs text-notion-text font-medium cursor-pointer hover:bg-notion-border transition-colors';
+            newTag.innerHTML = `
+                <span contenteditable="true" data-placeholder="新标签">新标签</span>
+                <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            `;
+            list.appendChild(newTag);
+            newTag.querySelector('[contenteditable="true"]').focus();
+        }
+
+        // 添加技能项
+        function addSkillItem(btn) {
+            const list = document.getElementById('skill-list');
+            const newItem = document.createElement('div');
+            newItem.className = 'group relative flex items-center gap-2';
+            newItem.innerHTML = `
+                <div class="text-sm text-notion-text flex-1 cursor-pointer hover:bg-notion-bg-light rounded px-1 py-0.5 transition-colors" contenteditable="true" data-placeholder="技能名称">技能名称</div>
+                <button onclick="deleteItem(this)" class="opacity-0 group-hover:opacity-100 text-notion-text-secondary hover:text-red-500 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </button>
+            `;
+            list.appendChild(newItem);
+            newItem.querySelector('[contenteditable="true"]').focus();
+        }
+
+        // 阻止回车键换行，改为失焦
+        document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+            el.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    this.blur();
+                }
+            });
+        });
+
+        // 保存数据到 localStorage（可选）
+        document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+            el.addEventListener('blur', function() {
+                // 这里可以添加保存逻辑
+                console.log('Content changed:', this.textContent);
+            });
+        });
+    </script>
+</body>
+</html>
