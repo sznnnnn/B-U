@@ -65,15 +65,31 @@
             color: #37352f;
             border-bottom: 2px solid #37352f;
         }
-    </style>
+        image.png    </style>
 </head>
 <body class="font-notion bg-notion-bg text-notion-text">
     <div class="min-h-screen py-10 px-5 md:px-10">
         <div class="max-w-7xl mx-auto">
             <!-- 页面标题 -->
             <div class="mb-8">
-                <h1 class="text-4xl md:text-5xl font-bold text-notion-text mb-2 leading-tight">个人档案</h1>
-                <p class="text-base text-notion-text-secondary font-normal">你的申请信息与进度概览</p>
+                <div class="flex items-center justify-between mb-2">
+                    <div>
+                        <h1 class="text-4xl md:text-5xl font-bold text-notion-text mb-2 leading-tight">个人档案</h1>
+                        <p class="text-base text-notion-text-secondary font-normal">你的申请信息与进度概览</p>
+                    </div>
+                    <button onclick="saveAllData()" class="flex items-center gap-2 px-4 py-2 bg-notion-text text-white rounded-md text-sm font-medium hover:opacity-90 transition-opacity shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        保存
+                    </button>
+                </div>
+                <div id="save-message" class="hidden mt-2 text-sm text-green-600 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    保存成功
+                </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -767,11 +783,69 @@
             });
         });
 
-        // 保存数据到 localStorage（可选）
+        // 保存所有数据到 localStorage
+        function saveAllData() {
+            try {
+                const data = {};
+                
+                // 收集所有可编辑内容
+                document.querySelectorAll('[contenteditable="true"]').forEach((el, index) => {
+                    const key = el.id || el.getAttribute('data-key') || `editable-${index}`;
+                    data[key] = el.textContent || el.innerHTML;
+                });
+                
+                // 保存到 localStorage
+                localStorage.setItem('personalProfile', JSON.stringify(data));
+                
+                // 显示保存成功消息
+                const saveMessage = document.getElementById('save-message');
+                if (saveMessage) {
+                    saveMessage.classList.remove('hidden');
+                    setTimeout(() => {
+                        saveMessage.classList.add('hidden');
+                    }, 2000);
+                }
+                
+                console.log('数据已保存');
+            } catch (error) {
+                console.error('保存失败:', error);
+                alert('保存失败，请重试');
+            }
+        }
+
+        // 加载保存的数据
+        function loadSavedData() {
+            try {
+                const savedData = localStorage.getItem('personalProfile');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    
+                    // 恢复所有可编辑内容
+                    document.querySelectorAll('[contenteditable="true"]').forEach((el, index) => {
+                        const key = el.id || el.getAttribute('data-key') || `editable-${index}`;
+                        if (data[key]) {
+                            el.textContent = data[key];
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('加载数据失败:', error);
+            }
+        }
+
+        // 页面加载时自动加载保存的数据
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedData();
+        });
+
+        // 自动保存（可选）：每次编辑后自动保存
         document.querySelectorAll('[contenteditable="true"]').forEach(el => {
             el.addEventListener('blur', function() {
-                // 这里可以添加保存逻辑
-                console.log('Content changed:', this.textContent);
+                // 延迟保存，避免频繁保存
+                clearTimeout(this.saveTimeout);
+                this.saveTimeout = setTimeout(() => {
+                    saveAllData();
+                }, 1000);
             });
         });
     </script>
